@@ -22,6 +22,8 @@ c.	Finally, the program opens a text file with the list or errors and exceptions
 3.	Step 3 reuses program of step 1
 
 4.	Step 4 reuses program of step 2
+
+
 Overall implementation of insert/update for import of CSV files is generalized by the usage of data classes (DataModels/Protuct, Pricing, Stock). Properties of these classes are decorated with custom attributes that are used to decide how to serialize data and how to build SQL statements (DataModels/Attributes). Structures of these classes are dictated by given CSV files and designed schema of the database. 
 Data classes are used later to infer and to build select, insert and update commands (ADO.NET is used; DataProcessing/DataBaseCommand<T>). Also, lines of CSV files are serialized into objects of created data classes (DataProcessing/CSVStreamReader extends StreamReader class) while being red from the CSV files.
 
