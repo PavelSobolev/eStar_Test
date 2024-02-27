@@ -1,4 +1,3 @@
-# eStar
 All steps are implemented as console applications. 
 Robin informed me (during our last interview) that mainly current solutions of the company based on .NET Framework 4.8 so I’ve concluded it would be logical to use the same version of .NET for my projects here (not sure 100% that was brilliant decision though).
 
