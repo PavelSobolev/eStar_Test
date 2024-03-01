@@ -23,7 +23,7 @@ namespace InitialImport
                     ExecuteCreationScripts();
                     ExecuteImport();
                     break;
-                    case "2":
+                case "2":
                     ExecuteUpdating();
                     break;
                 default:

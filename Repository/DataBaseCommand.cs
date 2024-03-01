@@ -21,7 +21,7 @@ namespace DBProcessing
             _errorInfo = errorInfo;
 
             _classProperties = typeof(T).GetProperties();
-            TableNameAttribute tableNameAttrInfo = Attribute.GetCustomAttribute(typeof(T), typeof(TableNameAttribute)) 
+            TableNameAttribute tableNameAttrInfo = Attribute.GetCustomAttribute(typeof(T), typeof(TableNameAttribute))
                 as TableNameAttribute;
 
             _tableName = tableNameAttrInfo != null ? tableNameAttrInfo.TableName : typeof(T).Name;
@@ -30,7 +30,7 @@ namespace DBProcessing
         public void Insert(T newObject)
         {
             try
-            {                
+            {
                 BuildInsertSqlCommand(newObject).ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -61,7 +61,7 @@ namespace DBProcessing
         {
             try
             {
-                if ((int)BuildCountSqlCommand(newObject).ExecuteScalar() > 0)                
+                if ((int)BuildCountSqlCommand(newObject).ExecuteScalar() > 0)
                     BuildUpdateSqlCommand(newObject).ExecuteNonQuery();
                 else
                     BuildInsertSqlCommand(newObject).ExecuteNonQuery();
@@ -84,7 +84,7 @@ namespace DBProcessing
                 result.Append(",");
             }
 
-            return result.Replace(",", ")", result.Length - 1, 1).ToString();            
+            return result.Replace(",", ")", result.Length - 1, 1).ToString();
         }
 
         private string GetInsertCommandParameters()
@@ -98,22 +98,22 @@ namespace DBProcessing
                 result.Append(",");
             }
 
-            return result.Replace(",", ")", result.Length - 1, 1).ToString();            
+            return result.Replace(",", ")", result.Length - 1, 1).ToString();
         }
 
 
         public SqlCommand BuildInsertSqlCommand(T inObject)
         {
-            
+
             SqlCommand sqlCommand = new SqlCommand(GetInsertCommandFields() + GetInsertCommandParameters(), _connection);
 
             for (int i = 0; i < _classProperties.Length; i++)
-            { 
+            {
                 var sqlParameter = new SqlParameter { ParameterName = $"@P{i}", Value = _classProperties[i].GetValue(inObject) };
                 sqlCommand.Parameters.Add(sqlParameter);
             }
 
-            
+
             return sqlCommand;
         }
 
@@ -122,7 +122,7 @@ namespace DBProcessing
             var result = new List<(string, int)>();
 
             PKAttribute pkAttrInfo;
-            
+
             for (int i = 0; i < _classProperties.Length; i++)
             {
                 pkAttrInfo = _classProperties[i].GetCustomAttribute<PKAttribute>();
@@ -149,7 +149,7 @@ namespace DBProcessing
 
             for (var i = 0; i < _classProperties.Length; i++)
             {
-                var sqlParameter = new SqlParameter { ParameterName = $"@P{i}", Value = _classProperties[i].GetValue(newObject)};
+                var sqlParameter = new SqlParameter { ParameterName = $"@P{i}", Value = _classProperties[i].GetValue(newObject) };
                 sqlCommand.Parameters.Add(sqlParameter);
             }
 
@@ -165,14 +165,14 @@ namespace DBProcessing
 
             for (var i = 0; i < PK.Count; i++)
             {
-                var sqlParameter = new SqlParameter 
-                { 
-                    ParameterName = $"@P{i}", 
-                    Value = _classProperties[PK[i].Item2].GetValue(newObject) 
+                var sqlParameter = new SqlParameter
+                {
+                    ParameterName = $"@P{i}",
+                    Value = _classProperties[PK[i].Item2].GetValue(newObject)
                 };
                 sqlCommand.Parameters.Add(sqlParameter);
             }
-            
+
             return sqlCommand;
         }
 
@@ -188,10 +188,10 @@ namespace DBProcessing
             return result.ToString();
         }
 
-        private string GetUpdateCommandText(List<(string pkName,int pkIndex)> primaryKeys)
+        private string GetUpdateCommandText(List<(string pkName, int pkIndex)> primaryKeys)
         {
             var result = new StringBuilder($"UPDATE {_tableName} SET ");
-           
+
             for (int i = 0; i < _classProperties.Length; i++)
             {
                 var propName = _classProperties[i].Name;
